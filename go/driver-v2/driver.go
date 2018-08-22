@@ -47,7 +47,7 @@ func (d *Driver) Decode(args []string) error {
 func parseDecodeArgs(args []string) (state device.State, payload []byte, port int, err error) {
 	if len(args) != 3 {
 		err = errors.New(`decode expected 3 arguments: device state as json string, hex payload and integer port
-	Usage: <driver binary> decode '{"endpoint.0.value":"true"}' 110A000F00551000 1`)
+	Usage: <driver binary> decode '{"endpoint_0_value":"true"}' 110A000F00551000 1`)
 		return
 	}
 
