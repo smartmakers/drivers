@@ -7,13 +7,12 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/smartmakers/drivers/go/device"
 )
 
-// State represents a device state
-type State map[string]interface{}
-
 // Decoder is a function which turns the current state and binary payload into a new state
-type Decoder func(state State, payload []byte, fPort int) (State, error)
+type Decoder func(state device.State, payload []byte, fPort int) (device.State, error)
 
 // Driver is the base for
 type Driver struct {
@@ -45,10 +44,10 @@ func (d *Driver) Decode(args []string) error {
 	return nil
 }
 
-func parseDecodeArgs(args []string) (state State, payload []byte, port int, err error) {
+func parseDecodeArgs(args []string) (state device.State, payload []byte, port int, err error) {
 	if len(args) != 3 {
 		err = errors.New(`decode expected 3 arguments: device state as json string, hex payload and integer port
-	Usage: <driver binary> decode '{"endpoint.0.value":"true"}' 110A000F00551001 1`)
+	Usage: <driver binary> decode '{"endpoint.0.value":"true"}' 110A000F00551000 1`)
 		return
 	}
 
