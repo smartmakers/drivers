@@ -52,7 +52,7 @@ func parseDecodeArgs(args []string) (payload []byte, port int, err error) {
 		return
 	}
 
-	payload, err = hex.DecodeString(strings.TrimLeft(args[0], "0x"))
+	payload, err = hex.DecodeString(strings.TrimPrefix(args[0], "0x"))
 	if err != nil {
 		err = errors.New("payload argument is not in hex")
 		return
