@@ -13,10 +13,11 @@ import (
 )
 
 type EncodeResponse struct {
-	NewState     device.State `json:"new_state"`
-	Payload      types.Bytes  `json:"payload"`
-	Port         int          `json:"port"`
-	Confirmation bool         `json:"confirmation"`
+	NewState      device.State `json:"new_state"`
+	PendingUpdate device.State `json:"pending_update"`
+	Payload       types.Bytes  `json:"payload"`
+	Port          int          `json:"port"`
+	Confirmation  bool         `json:"confirmation"`
 }
 
 // Encoder is a function which turns the current state and update into a encode response
