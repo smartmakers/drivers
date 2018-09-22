@@ -108,7 +108,7 @@ func (d *Driver) Encode(args []string) error {
 func parseEncodeArgs(args []string) (currentState, update device.State, err error) {
 	if len(args) != 2 {
 		err = errors.New(`encode expected 2 arguments: current device state and update as json strings 
-	Usage: <driver binary> encode '{"endpoint_0_value":"true"}' '{"minimum_reporting_interval":60}'`)
+	Usage: <driver binary> encode '{"endpoint_0_value":"true"}' '{"endpoint_0":{"reporting_interval":{"minimum":"30s","maximum":"12h","reported_change":0}}}'`)
 		return
 	}
 
