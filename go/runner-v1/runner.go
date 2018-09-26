@@ -1,4 +1,4 @@
-package runner
+package runner_v1
 
 import (
 	"errors"
@@ -8,7 +8,6 @@ import (
 
 type Driver interface {
 	Decode(args []string) error
-	Encode(args []string) error
 }
 
 type Runner struct {
@@ -56,8 +55,6 @@ func (d *Runner) run(args []string) error {
 	switch cmd {
 	case "decode":
 		return d.Decode(cmdArgs)
-	case "encode":
-		return d.Encode(cmdArgs)
 
 	default:
 		return errors.New("invalid subcommand")
