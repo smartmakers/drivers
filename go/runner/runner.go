@@ -48,7 +48,7 @@ func (d *Runner) Run(args []string) (success bool) {
 func (d *Runner) run(args []string) error {
 	if len(args) < 1 {
 		return errors.New(`subcommand required.
-	Supported commands: decode`)
+	Supported commands: decode, encode`)
 	}
 
 	cmd := args[0]
