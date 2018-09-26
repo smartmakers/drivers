@@ -5,76 +5,45 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/smartmakers/drivers/go/device"
+	"github.com/smartmakers/drivers/go/types"
 )
 
-// DecodedPayload represents a decoded payload
-type DecodedPayload interface{}
+type EncodeResponse struct {
+	NewState      device.State `json:"new_state"`
+	PendingUpdate device.State `json:"pending_update"`
+	Payload       types.Bytes  `json:"payload"`
+	Port          int          `json:"port"`
+	Confirmation  bool         `json:"confirmation"`
+}
 
-// Decoder is a function which turns a binary payload into a decoded payload
-type Decoder func(payload []byte, fPort int) (DecodedPayload, error)
+// Encoder is a function which turns the current state and update into a encode response
+type Encoder func(currentState, update device.State) (EncodeResponse, error)
+
+// Decoder is a function which turns the current state and binary payload into a new state
+type Decoder func(state device.State, payload []byte, fPort int) (device.State, error)
 
 // Driver is the base for
 type Driver struct {
 	Decoder Decoder
+	Encoder Encoder
 }
 
 // New creates and returns a new Driver
-func New() *Driver {
-	return &Driver{}
+func New(decoder Decoder, encoder Encoder) *Driver {
+	return &Driver{decoder, encoder}
 }
 
-// Run the driver with the specified arguments
-func (d *Driver) Run(args []string) (success bool) {
-	// Return false on panics
-	success = false
-	defer func() {
-		p := recover()
-		if p != nil {
-			if err, ok := p.(error); ok {
-				fmt.Fprintln(os.Stderr, "Crash:", err.Error())
-			} else {
-				fmt.Fprintln(os.Stderr, "Crash:", p)
-			}
-		}
-	}()
-
-	// Run it
-	err := d.run(args)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error: ", err.Error())
-		return false
-	}
-
-	return true
-}
-
-func (d *Driver) run(args []string) error {
-	if len(args) < 1 {
-		return errors.New(`subcommand required.
-	Supported commands: decode`)
-	}
-
-	cmd := args[0]
-	cmdArgs := args[1:]
-	switch cmd {
-	case "decode":
-		return d.decode(cmdArgs)
-
-	default:
-		return errors.New("invalid subcommand")
-	}
-}
-
-func (d *Driver) decode(args []string) error {
-	payload, port, err := parseDecodeArgs(args)
+func (d *Driver) Decode(args []string) error {
+	state, payload, port, err := parseDecodeArgs(args)
 	if err != nil {
 		return err
 	}
 
-	decoded, err := d.Decoder(payload, port)
+	decoded, err := d.Decoder(state, payload, port)
 	if err != nil {
 		return err
 	}
@@ -88,23 +57,76 @@ func (d *Driver) decode(args []string) error {
 	return nil
 }
 
-func parseDecodeArgs(args []string) (payload []byte, port int, err error) {
-	if len(args) != 2 {
-		err = errors.New(`decode expected 2 arguments: hex payload and integer port
-	Usage: <driver binary> decode 110A000F00551001 1`)
+func parseDecodeArgs(args []string) (state device.State, payload []byte, port int, err error) {
+	if len(args) != 3 {
+		err = errors.New(`decode expected 3 arguments: device state as json string, hex payload and integer port
+	Usage: <driver binary> decode '{"endpoint_0_value":"true"}' 110A000F00551000 1`)
 		return
 	}
 
-	payload, err = hex.DecodeString(strings.TrimPrefix(args[0], "0x"))
+	if len(args[0]) > 2 {
+		err = json.Unmarshal([]byte(args[0]), &state)
+		if err != nil {
+			return
+		}
+	}
+
+	payload, err = hex.DecodeString(strings.TrimPrefix(args[1], "0x"))
 	if err != nil {
 		err = errors.New("payload argument is not in hex")
 		return
 	}
 
-	val, err := strconv.ParseInt(args[1], 10, 32)
+	val, err := strconv.ParseInt(args[2], 10, 32)
 	if err != nil {
 		err = errors.New("port argument is not an integer")
 	}
 	port = int(val)
+	return
+}
+
+func (d *Driver) Encode(args []string) error {
+	currentState, update, err := parseEncodeArgs(args)
+	if err != nil {
+		return err
+	}
+
+	encoded, err := d.Encoder(currentState, update)
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(encoded)
+	if err != nil {
+		return errors.New("failed to marshal in json encoded data")
+	}
+
+	fmt.Println(string(data))
+	return nil
+}
+
+func parseEncodeArgs(args []string) (currentState, update device.State, err error) {
+	if len(args) != 2 {
+		err = errors.New(`encode expected 2 arguments: current device state and update as json strings 
+	Usage: <driver binary> encode '{"endpoint_0_value":"true"}' '{"endpoint_0":{"reporting_interval":{"minimum":"30s","maximum":"12h","reported_change":0}}}'`)
+		return
+	}
+
+	if len(args[0]) > 2 {
+		err = json.Unmarshal([]byte(args[0]), &currentState)
+		if err != nil {
+			return
+		}
+	}
+
+	if len(args[1]) <= 2 {
+		err = errors.New("`update` could not be empty")
+		return
+	}
+	err = json.Unmarshal([]byte(args[1]), &update)
+	if err != nil {
+		return
+	}
+
 	return
 }
