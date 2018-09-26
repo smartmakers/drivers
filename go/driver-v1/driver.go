@@ -1,11 +1,10 @@
-package driver
+package driver_v1
 
 import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -22,53 +21,11 @@ type Driver struct {
 }
 
 // New creates and returns a new Driver
-func New() *Driver {
-	return &Driver{}
+func New(decoder Decoder) *Driver {
+	return &Driver{decoder}
 }
 
-// Run the driver with the specified arguments
-func (d *Driver) Run(args []string) (success bool) {
-	// Return false on panics
-	success = false
-	defer func() {
-		p := recover()
-		if p != nil {
-			if err, ok := p.(error); ok {
-				fmt.Fprintln(os.Stderr, "Crash:", err.Error())
-			} else {
-				fmt.Fprintln(os.Stderr, "Crash:", p)
-			}
-		}
-	}()
-
-	// Run it
-	err := d.run(args)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error: ", err.Error())
-		return false
-	}
-
-	return true
-}
-
-func (d *Driver) run(args []string) error {
-	if len(args) < 1 {
-		return errors.New(`subcommand required.
-	Supported commands: decode`)
-	}
-
-	cmd := args[0]
-	cmdArgs := args[1:]
-	switch cmd {
-	case "decode":
-		return d.decode(cmdArgs)
-
-	default:
-		return errors.New("invalid subcommand")
-	}
-}
-
-func (d *Driver) decode(args []string) error {
+func (d *Driver) Decode(args []string) error {
 	payload, port, err := parseDecodeArgs(args)
 	if err != nil {
 		return err
