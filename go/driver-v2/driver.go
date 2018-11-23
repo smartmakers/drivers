@@ -13,18 +13,22 @@ import (
 )
 
 type EncodeResponse struct {
-	NewState      device.State `json:"new_state"`
-	PendingUpdate device.State `json:"pending_update"`
-	Payload       types.Bytes  `json:"payload"`
-	Port          int          `json:"port"`
-	Confirmation  bool         `json:"confirmation"`
+	NewState     device.State `json:"new_state"`
+	Payload      types.Bytes  `json:"payload"`
+	Port         int          `json:"port"`
+	Confirmation bool         `json:"confirmation"`
+}
+
+type DecodeResponse struct {
+	NewState device.State   `json:"new_state"`
+	Updates  []device.State `json:"updates"`
 }
 
 // Encoder is a function which turns the current state and update into a encode response
 type Encoder func(currentState, update device.State) (EncodeResponse, error)
 
 // Decoder is a function which turns the current state and binary payload into a new state
-type Decoder func(state device.State, payload []byte, fPort int) (device.State, error)
+type Decoder func(state device.State, payload []byte, fPort int) (DecodeResponse, error)
 
 // Driver is the base for
 type Driver struct {
