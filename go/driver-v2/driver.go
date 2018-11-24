@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/smartmakers/drivers/go/device"
 	"github.com/smartmakers/drivers/go/types"
@@ -20,8 +21,13 @@ type EncodeResponse struct {
 }
 
 type DecodeResponse struct {
-	NewState device.State   `json:"new_state"`
-	Updates  []device.State `json:"updates"`
+	NewState device.State `json:"new_state"`
+	Updates  []Update     `json:"updates"`
+}
+
+type Update struct {
+	Timestamp *time.Time   `json:"timestamp"`
+	Values    device.State `json:"values"`
 }
 
 // Encoder is a function which turns the current state and update into a encode response
