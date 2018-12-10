@@ -2,8 +2,6 @@
 
 This guide explains how to use the SmartMakers drivers command line interface (CLI) tool for creating and managing driver projects. Some typical IoT use cases are Smart Metering, Smart Energy, Smart Farming, Fleet Tracking, etc.
 
-The examples use the [Elsys ERS](https://www.elsys.se/en/ers/) LoRaWAN room sensor for measuring indoor environment.
-
 ## Contents
 
 - [Quickstart](#quickstart)
@@ -14,11 +12,17 @@ The examples use the [Elsys ERS](https://www.elsys.se/en/ers/) LoRaWAN room sens
 
 #### 1. Installing the CLI
 
-In order to get started, you'll want to install SmartMakers drivers command line interface (CLI) globally. We recommend installing the drivers CLI using one of the pre-built packages. Once installed, you will be able to open create and manage driver projects in Go and JavaScript.
+In order to get started, you'll want to install SmartMakers drivers command line interface (CLI) globally. We recommend installing the drivers CLI by downloading the [pre-built binaries](https://storage.googleapis.com/sm-tools/drivers). Alternatively, you can download the CLI tool from the terminal:
+
+``` shell
+$ wget https://storage.googleapis.com/sm-tools/drivers
+```
+
+Once installed, you will be able to open create and manage driver projects in Go and JavaScript.
 
 ## How the CLI works
 
-Each time the CLI is run, it looks for the config file, .project, the root directory of your project. It then applies the configuration from your, and executes any commands you've requested for it to run.
+Each time the CLI is run, it looks for the config file, .project, in the root directory of your project. It then applies the configuration from your, and executes any commands you've requested for it to run.
 
 ``` shell
 $ drivers -h
@@ -108,6 +112,8 @@ $ drivers push -t latest
 For more on the push command, run `$ drivers push -h`.
 
 ## Examples
+
+These sample drivers are configured with details of the [Elsys ERS](https://www.elsys.se/en/ers/) LoRaWAN room sensor for measuring indoor environment.
 
 | Demo | Description |
 |:------|:----------|
