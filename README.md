@@ -130,7 +130,7 @@ Semantic versioning (https://semver.org/) is an informal standard on how softwar
 change across different releases of a software product.
 
 Version numbers follow the semantic versioning consist of a major version, a minor version,
-and a patch version, separated by dots: <major>.<minor>.<patch>, e.g. `1.0.2`.
+and a patch version, separated by dots: major.minor.patch, e.g. `1.0.2`.
 Changes to the major version indicate backwards-incompatible changes,
 changes to the minor version number indicate backwards-compatible feature additions,
 and change to the patch level indicate backwards-compatible bug fixes.
