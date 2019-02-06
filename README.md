@@ -4,13 +4,6 @@ The SmartMakers driver SDK contains pre-built executables, documentation, and ex
 for developing and deploying your own IoT device driver for the thingsHub IoT middleware.
 
 
-## Contents
-
-- [Quickstart](#quickstart)
-- [Examples](#examples)
-- [Contributing](#contributing)
-
-
 ## Quickstart Guide
 
 Check out the [Quickstart Guide](docs/quickstart.md)
@@ -30,7 +23,7 @@ for more in-depth information on driver development.
 ## Driver Metadata
 
 Driver metadata is information about a driver which is not directly part of the driver's executable code itself.
-This includes, for example, information about the driver'S name, author, as well as the devices supported by this driver.
+This includes, for example, information about the driver's name, author, as well as the devices supported by this driver.
 See [here](docs/metadata.md) for more information about driver metadata.
 
 
@@ -41,7 +34,7 @@ They provide the thingsHub with an understand on how it should interprete a devi
 and the different features a device provides, even before receiving actual uplinks
 from the device.
 
-More information about driver schemas can be found [here](docs/schemas.md).
+More information about driver schemas can be found [here](docs/schema.md).
 
 
 ## Driver Versioning
