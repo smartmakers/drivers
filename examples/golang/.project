@@ -1,0 +1,23 @@
+type: golang
+metadata:
+  name: imaginary-heater
+  author: pupil
+  supports:
+  - manufacturer: acme
+    model: heater
+    firmwareversion: 1.0
+  platform: amd64
+  os: linux
+
+schema:
+  version: "1"
+  properties:
+    temperatures:
+      feed:
+        type: float64
+        unit: °C
+        description: The heater's feed temperature
+      return:
+        type: float64
+        unit: °C
+        description: The heater's return temperature
