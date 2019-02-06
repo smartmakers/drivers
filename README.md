@@ -33,38 +33,6 @@ Driver metadata is information about a driver which is not directly part of the 
 This includes, for example, information about the driver'S name, author, as well as the devices supported by this driver.
 See [here](docs/metadata.md) for more information about driver metadata.
 
-## Driver Capability Levels
-
-IoT devices vary greatly in their capabilities depending on the use case and the required functionality.
-Some devices simply send a set of measurements, e.g. temperature and humidity, on a regular schedule.
-More advanced devices bridge other protocols, e.g. ModBus or MBus, and need to split the other
-protocol's payload into multiple LoRa messages.
-Another commonly supported feature is configuration by downlinks,
-or sending batch messages, where the  devices collects data over time and sends multiple
-measurements of the same physical phenomenon at different times,
-together in a single uplink.
-
-To make full use of all of the features in any of these devices,
-considerably effort needs to be spent on the server side.
-Anything that the server side does not support is less accessible to the user,
-or possible even entirely inaccessible.
-This inherently results in a certain amount of complexity in the code which
-supports the features on the server side.
-
-However, for drivers for simpler devices, this added complexity might not even be desirable,
-considering the device itself couldn't make use of any of the advanced features.
-
-The thingsHub uses the concept of Driver Capability Levels to allow for such simple and complex
-drivers to coexist in the same system and to be behave sensibly and predictably.
-Driver Capability Levels are described in-depth [here](docs/capabilities.md).
-
-Note that while Driver Capability levels provide a rough understanding of a driver's capabilities,
-they should not be seen as a measurement of a driver's maturity or the completeness of a
-driver's support for the device's features.
-The Driver Capability Level should rather be seen as a contract
-between the driver and the system that defines how data processed by the driver
-should be handled by the system and vice versa.
-
 
 ## Driver Schemas
 
@@ -85,8 +53,6 @@ See the [Versioning Guide](docs/versioning.md) to understand how versioning work
 ## Driver Development with Javascript and Golang
 
 Drivers can currently be developed in [Javascript](docs/javascript.md) or [Golang](docs/golang.md).
-Note that javascript drivers currently are only supported for capability levels 1 and 2,
-while Golang drivers can be written for levels 1, 2, and 4.
 
 
 ## Examples
