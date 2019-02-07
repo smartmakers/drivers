@@ -68,7 +68,7 @@ Or alternatively edit the `.project` file accordingly:
 ```yaml
 type: golang
 metadata:
-  name: "<drivern ame>"
+  name: "<driver name>"
   author: "<your name>"
   labels:
   supports:
