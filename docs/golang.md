@@ -9,6 +9,6 @@ drivers init javascript
 ## Notes
 
 * A Golang driver development project requires golang's `go` command line tool
-  to be installed.
+  to be installed (https://golang.org/doc/install#install).
 * Golang requires the driver development projects path to be a subpath of the
   path set in the environment variable GOPATH.
