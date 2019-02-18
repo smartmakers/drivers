@@ -55,8 +55,8 @@ LoRaWAN room sensor for measuring indoor environment.
 
 | Demo | Description |
 |:------|:----------|
-| [`golang`](https://github.com/smartmakers/drivers/tree/master/examples/elsys-go) | Simple Elsys Go driver |
-| [`javascript`](https://github.com/smartmakers/drivers/tree/master/examples/elsys-js) | Simple Elsys JavaScript driver |
+| [`golang`](https://github.com/smartmakers/drivers/tree/master/examples/golang) | Simple golang driver |
+| [`javascript`](https://github.com/smartmakers/drivers/tree/master/examples/javascript) | Simple javaScript driver |
 
 
 ## Contributing
