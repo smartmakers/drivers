@@ -50,9 +50,6 @@ Drivers can currently be developed in [Javascript](docs/javascript.md) or [Golan
 
 ## Examples
 
-These sample drivers are configured with details of the [Elsys ERS](https://www.elsys.se/en/ers/)
-LoRaWAN room sensor for measuring indoor environment.
-
 | Demo | Description |
 |:------|:----------|
 | [`golang`](https://github.com/smartmakers/drivers/tree/master/examples/golang) | Simple golang driver |
