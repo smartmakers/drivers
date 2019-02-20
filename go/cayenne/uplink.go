@@ -1,4 +1,4 @@
-package main
+package cayenne
 
 import (
 	"errors"
@@ -13,15 +13,9 @@ import (
 // always uses the same data type.
 // This also means a channel is either for uplinks or
 // for downlinks, but never for both at the same time.
+// It does not seem to be entirely clear if this asusmption
+// is guaranteed by the LPP specification.
 type Uplink map[byte]Data
-
-// Data is the primary interface representing payload data.
-//
-// This is an empty interface: we currently only use it for
-// unmarshaling it from binary and for marshaling JSON from it.
-type Data interface {
-	UnmarshalBinary(payload []byte) error
-}
 
 // UnmarshalBinary unmarshal an Uplink from a binary payload.
 func (u *Uplink) UnmarshalBinary(payload []byte) error {
@@ -45,9 +39,13 @@ func (u *Uplink) UnmarshalBinary(payload []byte) error {
 
 // unmarshalData unmarshals a single data field
 func (u *Uplink) unmarshalData(ch, code byte, payload []byte) (int, error) {
-	ty, length, err := Type(code)
+	ty, length, err := dataType(code)
 	if err != nil {
 		return 0, err
+	}
+
+	if length > len(payload) {
+		return 0, errors.New("payload size does not match data types")
 	}
 
 	err = ty.UnmarshalBinary(payload[0:length])
@@ -59,14 +57,26 @@ func (u *Uplink) unmarshalData(ch, code byte, payload []byte) (int, error) {
 	return length, nil
 }
 
-// Type returns the DataType and it's length for a type code.
-func Type(code byte) (Data, int, error) {
+// dataType returns the DataType and it's length for a type code.
+func dataType(code byte) (Data, int, error) {
 	switch code {
 	case 0x00:
 		return new(DigitalInput), 1, nil
 	case 0x01:
 		return new(DigitalOutput), 1, nil
+	case 0x02:
+		return new(AnalogInput), 2, nil
+	case 0x03:
+		return new(AnalogOutput), 2, nil
 	default:
 		return nil, 0, fmt.Errorf("unsupported data type '%v'", code)
 	}
+}
+
+// Data is the primary interface representing payload data.
+//
+// This is an empty interface: we currently only use it for
+// unmarshaling it from binary and for marshaling JSON from it.
+type Data interface {
+	UnmarshalBinary(payload []byte) error
 }
