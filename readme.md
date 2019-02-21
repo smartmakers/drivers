@@ -1,4 +1,4 @@
-# SmartMakers Driver Development Kit
+# ThingsHub Driver Development Kit
 
 The SmartMakers driver SDK contains pre-built executables, documentation, and examples
 for developing and deploying your own IoT device driver for the thingsHub IoT middleware.
