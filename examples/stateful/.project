@@ -16,15 +16,6 @@ session:
 schema:
   version: "2"
   properties:
-    temperature:
-      type: int64
-      unit: °C
-      description: The temperature (between 0 and 180°C)
-    door:
-      opened:
-        type: bool
-        description: Reports if the door is open
-      locked:
-        type: bool
-        description: |
-          Reports if the door is locked. Can be used to lock / unlock the door.
+    open:
+      type: boolean
+      description: Reports if the door is open

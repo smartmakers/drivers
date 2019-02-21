@@ -3,17 +3,12 @@ package main
 import (
 	"os"
 
-	"github.com/smartmakers/drivers/go/driver"
+	"github.com/smartmakers/drivers/go/driver/v2"
 )
 
-func main() {
-	drv := driver.New()
-	drv.Decoder = decodePayload
-	drv.Run(os.Args[1:])
-}
+// Driver is the main driver itself.
+type Driver struct{}
 
-func decodePayload(payload []byte, fPort int) (driver.DecodedPayload, error) {
-	uplink := Uplink{}
-	err := uplink.UnmarshalBinary(payload)
-	return uplink, err
+func main() {
+	v2.Run(&Driver{}, os.Args[1:])
 }
