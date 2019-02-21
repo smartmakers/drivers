@@ -54,7 +54,7 @@ Drivers can currently be developed in [Javascript](docs/javascript.md) or [Golan
 |:------|:----------|
 | [`golang`](https://github.com/smartmakers/drivers/tree/master/examples/golang) | Simple golang driver |
 | [`javascript`](https://github.com/smartmakers/drivers/tree/master/examples/javascript) | Simple javaScript driver |
-| [`stateful`](https://github.com/smartmakers/dirvers/tree/master/examples/stateful) | Stateful example with downlinks |
+| [`stateful`](https://github.com/smartmakers/drivers/tree/master/examples/stateful) | Stateful example with downlinks |
 
 
 ## Contributing
