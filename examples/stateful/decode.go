@@ -4,9 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/smartmakers/drivers/go/cayenne"
-
 	"github.com/smartmakers/drivers/go/driver/v2"
+	"github.com/smartmakers/drivers/go/lpp"
 )
 
 const (
@@ -20,7 +19,7 @@ const (
 func (d *Driver) Decode(req v2.DecodeRequest, resp *v2.DecodeResponse) error {
 	newState := req.ReportedState.(State)
 
-	uplink, err := cayenne.Decode(req.Payload, req.Port)
+	uplink, err := lpp.Decode(req.Payload, req.Port)
 	if err != nil {
 		return err
 	}
@@ -29,7 +28,7 @@ func (d *Driver) Decode(req v2.DecodeRequest, resp *v2.DecodeResponse) error {
 		switch channel {
 		case OutputChannel:
 			// check if the output channel actually is a boolean
-			if b, ok := data.(*cayenne.DigitalInput); ok {
+			if b, ok := data.(*lpp.DigitalInput); ok {
 				b := bool(*b)
 				newState.Open = &b
 				resp.Updates = append(resp.Updates, v2.Update{

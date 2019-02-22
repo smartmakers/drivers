@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/smartmakers/drivers/go/encoding/bytes"
+	"github.com/smartmakers/drivers/go/encoding/bitfield"
 )
 
 // PackedBigEndianBCD is a packed, big endian, binary coded decimal value.
@@ -17,8 +17,8 @@ func (bcd *PackedBigEndianBCD) UnmarshalBinary(array []byte) error {
 	for i := 0; i < len(array); i++ {
 		// can ignore errors here, because they depend only on 'from' and 'to'
 		// which are hard coded to valid values
-		upperDigit, _ := bytes.Bits(array[i], 5, 8)
-		lowerDigit, _ := bytes.Bits(array[i], 1, 4)
+		upperDigit, _ := bitfield.ExtractBits(array[i], 5, 8)
+		lowerDigit, _ := bitfield.ExtractBits(array[i], 1, 4)
 		if lowerDigit > 9 || upperDigit > 9 {
 			*bcd = 0
 			return fmt.Errorf("Bad digit value for BCD: %x", array[i])
@@ -43,8 +43,8 @@ func (bcd *PackedLittleEndianBCD) UnmarshalBinary(array []byte) error {
 	for i := 0; i < len(array); i++ {
 		// can ignore errors here, because they depend only on 'from' and 'to'
 		// which are hard coded to valid values
-		upperDigit, _ := bytes.Bits(array[i], 1, 4)
-		lowerDigit, _ := bytes.Bits(array[i], 5, 8)
+		upperDigit, _ := bitfield.ExtractBits(array[i], 1, 4)
+		lowerDigit, _ := bitfield.ExtractBits(array[i], 5, 8)
 		if lowerDigit > 9 || upperDigit > 9 {
 			return fmt.Errorf("Bad digit value for BCD: %x", array[i])
 		}

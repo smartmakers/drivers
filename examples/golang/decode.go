@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/smartmakers/drivers/go/cayenne"
-	"github.com/smartmakers/drivers/go/driver"
+	"github.com/smartmakers/drivers/go/driver/v1"
+	"github.com/smartmakers/drivers/go/lpp"
 )
 
 const (
@@ -12,9 +12,9 @@ const (
 	returnChannel = 1
 )
 
-func decode(payload []byte, port int) (driver.DecodedPayload, error) {
+func decode(payload []byte, port int) (v1.DecodedPayload, error) {
 	// unmarshal generic Cayenne LPP payload first
-	uplink, err := cayenne.Decode(payload, port)
+	uplink, err := lpp.Decode(payload, port)
 	if err != nil {
 		return nil, err
 	}
