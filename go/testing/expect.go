@@ -28,6 +28,7 @@ func ExpectNoError(t *testing.T, err error) {
 
 	if err != nil {
 		t.Errorf("Did not expect error but got  '%v'", err)
+		t.Fail()
 	}
 }
 
