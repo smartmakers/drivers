@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/smartmakers/drivers/go/types"
+	encoding_hex "github.com/smartmakers/drivers/go/encoding/hex"
 )
 
 // State is a generic type which used in requests and responses to interface with the driver.
@@ -62,10 +62,10 @@ type EncodeRequest struct {
 
 // EncodeResponse represents the response for a request to encode a downlink.
 type EncodeResponse struct {
-	NewState     State       `json:"new_state"`
-	Payload      types.Bytes `json:"payload"`
-	Port         int         `json:"port"`
-	Confirmation bool        `json:"confirmation"`
+	NewState     State   `json:"new_state"`
+	Payload      encoding_hex.Hex `json:"payload"`
+	Port         int     `json:"port"`
+	Confirmation bool    `json:"confirmation"`
 }
 
 // Driver is the core interface for implementing drivers.
