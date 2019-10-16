@@ -9,7 +9,9 @@ Schemas provide a multitude of benefits:
 
 The following is an example of such a schema:
 
-```schema:
+```
+schema:
+  version: "2"
   properties:
     temperatures:
       type: object
@@ -24,7 +26,13 @@ The following is an example of such a schema:
           description: The heater's return temperature
 ```
 
-## Properties and Property Types
+A `schema` has a version and the default version is **1**, which doesn't support much functionality apart from allowing you to define the schema however you want.
+From version **2** however we support schema validation and we also enforce the driver to decode the data according to the schema. In order for this functionality to apply the schema version must be specified otherwise it will fallback to default version(*1*) and the functionality is ignored.
+
+
+## Version 2 Schema
+
+### Properties and Property Types
 
 A schema is a tree of properties.
 Each property has a `type` and optionally a `description`.
@@ -66,7 +74,7 @@ room:
       type: int64
 ```
 
-## Schemas and Data
+### Schemas and Data
 
 Schemas are used to validate the data returned by a driver.
 A driver may send the data listed in the schema,
@@ -127,3 +135,47 @@ And also an incorrect type is not valid with respect to the schema:
   }
 }
 ```
+
+## Version 2.1 Schema
+
+Backwards compatible with 2. Added functionality for `configurable` properties.
+Only properties marked as `configurable` are allow to be set in the `desired state` of a device.
+
+Eg.:
+
+```
+schema:
+  version: "2.1"
+  properties:
+    humidity:
+      type: int64
+      unit: '%'
+      description: 0-100%
+      properties: {}
+      configurable: false
+      default: null
+    light:
+      type: int64
+      unit: Lux
+      description: 0-65535 Lux
+      properties: {}
+      configurable: false
+      default: null
+    settings:
+      type: object
+      unit: ""
+      description: Device settings.
+      properties:
+        lightper:
+          type: int64
+          unit: ""
+          description: |-
+            Interval in seconds for the sensor(Light) to wake up and sample data.
+            Value * Timebase(SplPer)= Light sample time.
+          properties: {}
+          configurable: true
+          default: 120
+
+```
+
+  **Note:** Objects cannot be set as `configurable` only simple properties. An `object` however can contain `configurable` properties.
